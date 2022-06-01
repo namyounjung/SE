@@ -28,15 +28,6 @@ fstream fio;
 //// 변수 선언
 //FILE* in_fp, * out_fp;
 //
-//vector<items> itemsList[100]; // 물건 저장한 벡터
-//vector<Account> AccountList; // 사람 정보 목록 저장한 벡터
-//map<string, int> memberKey; // 사람 고유 번호 저장해놓은 맵
-//
-//int primaryKeyOfAccount = 0; // 사람의 고유 번호
-//int primaryKeyOfProduct = 0; // 물건의 고유 번호
-//bool isLogined = false; // 로그인 되어있는가
-//int nowKey = 0; // 현재 로그인 된 사람의 고유키 (primaryKeyOfAccount)
-//
 //class Account {
 //public:
 //    string memName;
@@ -342,14 +333,6 @@ fstream fio;
 //
 //
 //
-///*
-//
-//3 1 hat chulsoo 2000 1
-//3 1 test testcompnay 3000 10
-//3 1 test2 testcompany 1500 2
-//3 2
-// */
-
 
 
 class Account {
@@ -413,7 +396,7 @@ int checkValid(string& str) {
 
 
 int main() {
-    string cmd, option; // integer overflow 피하려고 string 으로 받기
+    string menu_level_1, menu_level_2; // integer overflow 피하려고 string 으로 받기
 
     vector<items> itemsList[1000]; // 물건 저장한 벡터 - 현재 최대 1000명 받을수 잇음
     vector<Account> AccountList; // 사람 정보 목록 저장한 벡터
@@ -425,34 +408,34 @@ int main() {
     bool isLogined = false; // 로그인 되어있는가
     int nowKey = 0; // 현재 로그인 된 사람의 고유키 (primaryKeyOfAccount)
 
+    string name, rrn, id, password;
 
     while (1) {
-        fin >> cmd;
-        int int_cmd = checkValid(cmd); // 유효한 명령인지 ?
+        fin >> menu_level_1;
+        int chk_level1 = checkValid(menu_level_1); // 유효한 명령인지 ?
 
-        if (int_cmd == -1) { // 예외처리 ..
+        if (chk_level1 == -1) { // 예외처리 ..
             fout << "cmd error\n";
             continue;
         }
 
-
         /////////////////// 6. 종료
-        if (int_cmd == 6) break;
+        if (chk_level1 == 6) break;
 
         ////////////////// 1. 가입 & 탈퇴
-        if (int_cmd == 1) {
+        if (chk_level1 == 1) {
             ////////// 명령 유효성 확인
-            fin >> option;
-            int int_option = checkValid(option); // 유효한 옵션인지 확인
+            fin >> menu_level_2;
+            int chk_level2 = checkValid(menu_level_2); // 유효한 옵션인지 확인
 
-            if (int_option == -1) {
+            if (chk_level2 == -1) {
                 fout << "option error";
                 continue;
             }
             ////////////////////////
 
-            if (int_option == 1) {
-                string name, rrn, id, password;
+            if (chk_level2 == 1) {
+                
                 fin >> name >> rrn >> id >> password;
 
                 if (memberKey.count(id)) {
@@ -464,8 +447,9 @@ int main() {
                 memberKey[id] = primaryKeyOfAccount++;
                 AccountList[memberKey[id]].memSystemPermission = true;
                 fout << "1.1. 회원 가입\n";
+                fout << name << " " << rrn << " " << id << " " << password<< "\n";
             }
-            else if (int_option == 2) {
+            else if (chk_level2 == 2) {
                 if (!isLogined) {
                     fout << "로그인 안되어 있음\n";
                     continue;
@@ -473,17 +457,16 @@ int main() {
                 fout << "1.2. 회원 탈퇴\n";
                 AccountList[nowKey].memSystemPermission = false; // 탈퇴
                 isLogined = false;
-                fout << "탈퇴 완료.\n";
-
+                fout << id << "\n";
+                id = "";
             }
         }
 
-
         ////////////////// 2. 로그인
-        else if (int_cmd == 2) {
+        else if (chk_level1 == 2) {
             ////////// 명령 유효성 확인
-            fin >> option;
-            int int_option = checkValid(option);
+            fin >> menu_level_2;
+            int int_option = checkValid(menu_level_2);
 
             if (int_option == -1) {
                 fout << "option error";
@@ -496,6 +479,7 @@ int main() {
                 string id, password;
                 fin >> id >> password;
 
+                fout << "2.2. 로그인\n";
 
                 if (isLogined) {
                     fout << "이미 로그인되어 있습니다. 로그아웃 먼저 하세요\n";
@@ -516,28 +500,28 @@ int main() {
                 }
 
                 if (password == AccountList[nowKey].memPW) {
-                    fout << "2.2. 로그인\n";
+                    fout << "> " << id << "\n";
                     isLogined = true;
                 }
                 else {
-                    fout << "wrong password. Login failed.\n";
+                    fout << "비밀번호가 틀렸습니다. \n";
                 }
             }
             else if (int_option == 2) {
                 isLogined = false; // 로그인 해제
                 nowKey = 0;
                 fout << "2.2. 로그아웃\n";
+                fout << "> " << id << "\n";
             }
             else fout << "option error\n";
 
         }
 
-
         //////////////// 3 판매 의류 등록
-        else if (int_cmd == 3) { // 3.1 ~ 3.3
+        else if (chk_level1 == 3) { // 3.1 ~ 3.3
             ////////// 명령 유효성 확인
-            fin >> option;
-            int int_option = checkValid(option);
+            fin >> menu_level_2;
+            int int_option = checkValid(menu_level_2);
 
             if (int_option == -1) {
                 fout << "option error";
@@ -554,16 +538,14 @@ int main() {
                 string names, company; int price, quantity;
                 fin >> names >> company >> price >> quantity;
                 if (AccountList[nowKey].itemKey.count(names)) {
-                    fout << "이미 같은 이름을 가진 아이템이 존재합니다. 다시입력 ..\n";
+                    fout << "이미 같은 이름을 가진 아이템이 존재합니다. 다시입력해주세요.\n";
                 }
                 else {
                     fout << "3.1. 판매 의류 등록\n";
                     itemsList[nowKey].emplace_back(names, company, price, quantity);
                     AccountList[nowKey].itemKey[names] = primaryKeyOfProduct++;
-                    fout << "상품 등록 완료.\n";
+                    fout << names << " " << company << " " << price << " " << quantity << "\n";
                 }
-
-
             }
             else if (int_option == 2) { // 등록 상품 조회
                 if (itemsList[nowKey].empty()) cout << "there is No item\n";
@@ -582,19 +564,15 @@ int main() {
                         cnt++;
                     }
                 }
-
                 if (itemsList[nowKey].empty() || cnt < 1) cout << "No Sold item\n";
             }
             else fout << "option error\n";
         }
 
-
-
-
         ////////////// 5. 통계
-        else if (int_cmd == 5) {
-            fin >> option;
-            int int_option = checkValid(option);
+        else if (chk_level1 == 5) {
+            fin >> menu_level_2;
+            int int_option = checkValid(menu_level_2);
 
             if (!isLogined) {
                 fout << "you are not logined.\n";
@@ -615,7 +593,6 @@ int main() {
                         cnt++;
                     }
                 }
-
                 if (itemsList[nowKey].empty() || cnt < 1) fout << "No Sold item\n";
             }
             else fout << "option error\n";
