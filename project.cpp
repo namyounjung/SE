@@ -5,13 +5,43 @@
 #include <vector>
 #include <map>
 #include <fstream>
+#include "items.h"
+#include "Account.h"
 using namespace std;
 
 // 상수 선언
 #define MAX_STRING 32
+
 ifstream fin("input.txt");
 ofstream fout("output.txt");
 fstream fio;
+
+
+void items::showItemInform(items& item) {
+    fout << "> ";
+    fout << item.itemName << " ";
+    fout << item.itemCompany << " ";
+    fout << item.itemPrice << " ";
+    fout << item.itemQuantity << '\n';
+}
+
+void items::showSoldItemInform(items& item) {
+    fout << "> ";
+    fout << item.itemName << " ";
+    fout << item.itemCompany << " ";
+    fout << item.itemPrice << " ";
+    fout << item.itemSoldQuantity << " ";
+    fout << item.itemSatisfaction << '\n';
+}
+
+void items::showSoldItemStatistic(items& item) {
+    fout << "> ";
+    fout << item.itemName << " ";
+    fout << item.itemPrice * item.itemSoldQuantity << " ";
+    fout << item.itemSatisfaction / item.itemSoldQuantity << '\n';
+}
+
+
 //
 //// 함수 선언
 //void doTask();
@@ -335,64 +365,10 @@ fstream fio;
 //
 
 
-class Account {
-public:
-    string memName;
-    string memRRN;
-    string memID;
-    string memPW;
-    bool memSystemPermission;
-    map<string, int> itemKey;
-
-
-    Account(string name, string rrn, string id, string pw)
-        : memName(name), memRRN(rrn), memID(id), memPW(pw) {};
-};
-
-class items {
-public:
-    string itemName;
-    string itemCompany;
-    int itemPrice;
-    int itemQuantity;
-    int itemSoldQuantity;
-    int itemSatisfaction;
-
-    items(string names, string company, int price, int quantity)
-        : itemName(names), itemCompany(company), itemPrice(price), itemQuantity(quantity) {};
-
-};
-
-
-void showItemInform(items& item) {
-    fout << item.itemName << " ";
-    fout << item.itemCompany << " ";
-    fout << item.itemPrice << " ";
-    fout << item.itemQuantity << '\n';
-}
-
-
-void showSoldItemInform(items& item) {
-    fout << item.itemName << " ";
-    fout << item.itemCompany << " ";
-    fout << item.itemPrice << " ";
-    fout << item.itemSoldQuantity << " ";
-    fout << item.itemSatisfaction << '\n';
-}
-
-void showSoldItemStatistic(items& item) {
-    fout << item.itemName << " ";
-    fout << item.itemPrice * item.itemSoldQuantity << " ";
-    fout << item.itemSatisfaction / item.itemSoldQuantity << '\n';
-}
-
-
 int checkValid(string& str) {
     if (str.length() > 1) return -1;
     return stoi(str);
 }
-
-
 
 
 int main() {
@@ -429,7 +405,7 @@ int main() {
             int chk_level2 = checkValid(menu_level_2); // 유효한 옵션인지 확인
 
             if (chk_level2 == -1) {
-                fout << "option error";
+                //fout << "option error";
                 continue;
             }
             ////////////////////////
@@ -439,7 +415,7 @@ int main() {
                 fin >> name >> rrn >> id >> password;
 
                 if (memberKey.count(id)) {
-                    fout << "이미 존재하거나 탈퇴한 아이디 입니다\n";
+                    //fout << "이미 존재하거나 탈퇴한 아이디 입니다\n";
                     continue;
                 }
 
@@ -447,11 +423,11 @@ int main() {
                 memberKey[id] = primaryKeyOfAccount++;
                 AccountList[memberKey[id]].memSystemPermission = true;
                 fout << "1.1. 회원 가입\n";
-                fout << name << " " << rrn << " " << id << " " << password<< "\n";
+                fout << "> " << name << " " << rrn << " " << id << " " << password << "\n";
             }
             else if (chk_level2 == 2) {
                 if (!isLogined) {
-                    fout << "로그인 안되어 있음\n";
+                    //fout << "로그인 안되어 있음\n";
                     continue;
                 }
                 fout << "1.2. 회원 탈퇴\n";
@@ -469,7 +445,7 @@ int main() {
             int int_option = checkValid(menu_level_2);
 
             if (int_option == -1) {
-                fout << "option error";
+                //fout << "option error";
                 continue;
             }
             ////////////////////////////
@@ -479,15 +455,15 @@ int main() {
                 string id, password;
                 fin >> id >> password;
 
-                fout << "2.2. 로그인\n";
+                fout << "2.1. 로그인\n";
 
                 if (isLogined) {
-                    fout << "이미 로그인되어 있습니다. 로그아웃 먼저 하세요\n";
+                    //fout << "이미 로그인되어 있습니다. 로그아웃 먼저 하세요\n";
                     continue;
                 }
 
                 if (!memberKey.count(id)) {
-                    fout << "존재하지 않는 아이디 입니다\n";
+                    //fout << "존재하지 않는 아이디 입니다\n";
                     continue;
                 }
 
@@ -495,7 +471,7 @@ int main() {
 
                 //cout<<AccountList[Key].memSystemPermission<<'\n';
                 if (!AccountList[nowKey].memSystemPermission) {
-                    fout << "탈퇴된 아이디 입니다\n";\
+                    //fout << "탈퇴된 아이디 입니다\n";\
                         continue;
                 }
 
@@ -504,7 +480,7 @@ int main() {
                     isLogined = true;
                 }
                 else {
-                    fout << "비밀번호가 틀렸습니다. \n";
+                    //fout << "비밀번호가 틀렸습니다. \n";
                 }
             }
             else if (int_option == 2) {
@@ -513,7 +489,7 @@ int main() {
                 fout << "2.2. 로그아웃\n";
                 fout << "> " << id << "\n";
             }
-            else fout << "option error\n";
+            //else fout << "option error\n";
 
         }
 
@@ -524,13 +500,13 @@ int main() {
             int int_option = checkValid(menu_level_2);
 
             if (int_option == -1) {
-                fout << "option error";
+                //fout << "option error";
                 continue;
             }
             ///////////////////////////
 
             if (!isLogined) {
-                fout << "you are not logined.\n";
+                //fout << "you are not logined.\n";
                 continue;
             }
 
@@ -544,14 +520,14 @@ int main() {
                     fout << "3.1. 판매 의류 등록\n";
                     itemsList[nowKey].emplace_back(names, company, price, quantity);
                     AccountList[nowKey].itemKey[names] = primaryKeyOfProduct++;
-                    fout << names << " " << company << " " << price << " " << quantity << "\n";
+                    fout << "> " << names << " " << company << " " << price << " " << quantity << "\n";
                 }
             }
             else if (int_option == 2) { // 등록 상품 조회
-                if (itemsList[nowKey].empty()) cout << "there is No item\n";
+                if (itemsList[nowKey].empty()) fout << "there is No item\n";
                 fout << "3.2. 등록 상품 조회\n";
                 for (auto& item : itemsList[nowKey]) {
-                    showItemInform(item);
+                    items::showItemInform(item);
                     // cout<<item.itemName<<" "<<item.itemCompany<<" "<<" "<<item.itemPrice<<" "<<item.itemQuantity<<'\n';
                 }
             }
@@ -560,11 +536,11 @@ int main() {
                 fout << "3.3. 판매 완료 상품 조회\n";
                 for (auto& item : itemsList[nowKey]) {
                     if (item.itemSoldQuantity > 0) {
-                        showSoldItemInform(item);
+                        items::showSoldItemInform(item);
                         cnt++;
                     }
                 }
-                if (itemsList[nowKey].empty() || cnt < 1) cout << "No Sold item\n";
+                if (itemsList[nowKey].empty() || cnt < 1) fout << "No Sold item\n";
             }
             else fout << "option error\n";
         }
@@ -575,12 +551,12 @@ int main() {
             int int_option = checkValid(menu_level_2);
 
             if (!isLogined) {
-                fout << "you are not logined.\n";
+                //fout << "you are not logined.\n";
                 continue;
             }
 
             if (int_option == -1) {
-                fout << "option error";
+                //fout << "option error";
                 continue;
             }
 
@@ -589,7 +565,7 @@ int main() {
                 fout << "5.1. 판매 상품 통계\n";
                 for (auto& item : itemsList[nowKey]) {
                     if (item.itemSoldQuantity > 0) {
-                        showSoldItemStatistic(item);
+                        items::showSoldItemStatistic(item);
                         cnt++;
                     }
                 }
