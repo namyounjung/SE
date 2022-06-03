@@ -251,6 +251,8 @@ int main() {
                 continue;
             }
 
+
+
             if (int_option == 1) { // 판매 의류 등록
                 string names, company; int price, quantity;
                 fin >> names >> company >> price >> quantity;
@@ -266,8 +268,9 @@ int main() {
             }
             else if (int_option == 2) { // 등록 상품 조회
                 fout << "3.2. 등록 상품 조회\n";
-                if (itemsList.empty()) fout << "there is No item\n";
+                if (itemsList.empty()) cout << "there is No item\n";
                 for (auto& item : itemsList) {
+                    if (item.itemSellerID != AccountList[nowKey].memID) continue;
                     Items::showItemInform(item);
                 }
             }
