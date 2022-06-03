@@ -41,11 +41,8 @@
 4.4. 상품 구매 만족도 평가
 > mbc hat 2
 5.1. 판매 상품 통계
-> hat 2000 2
-> pencil 1500 5
+> No Sold item
 3.2. 등록 상품 조회
-> hat chulsoo 2000 0
-> pencil minsoo 1500 4
 > pen minsoo 500 2
 1.2. 회원 탈퇴
 > kelly
@@ -62,10 +59,42 @@
 4.3. 상품 구매 내역 조회
 > pencil minsoo 1500 3 4
 5.1. 판매 상품 통계
-> hat 2000 2
-> pencil 3000 4
+> No Sold item
 3.2. 등록 상품 조회
-> hat chulsoo 2000 0
-> pencil minsoo 1500 3
-> pen minsoo 500 2
+3.1. 판매 의류 등록
+> apple minsun 5000 2
+3.2. 등록 상품 조회
+> apple minsun 5000 2
+2.2. 로그아웃
+> happy
+2.1. 로그인
+> mbc pwd1
+4.1. 상품 정보 검색
+> happy apple minsun 5000 2 0
+4.2. 상품 구매
+> happy apple
+4.3. 상품 구매 내역 조회
+> apple minsun 5000 1 0
+4.4. 상품 구매 만족도 평가
+> happy apple 5
+2.2. 로그아웃
+> happy
+1.1. 회원 가입
+> jee 112211 jee1 pw55
+2.1. 로그인
+> jee1 pw55
+4.1. 상품 정보 검색
+> happy apple minsun 5000 1 5
+4.2. 상품 구매
+> happy apple
+4.3. 상품 구매 내역 조회
+> apple minsun 5000 0 2
+4.4. 상품 구매 만족도 평가
+> happy apple 4
+2.2. 로그아웃
+> jee1
+2.1. 로그인
+> happy qwer1234
+5.1. 판매 상품 통계
+> apple 10000 4
 6.1. 종료

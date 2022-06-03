@@ -112,6 +112,18 @@ void Items::showSoldItemStatistic(Items& item) {
     fout << item.itemSatisfaction / item.itemSoldQuantity << '\n';
 }
 
+//// 상품 통계
+
+//void showSoldItemStatistic(int key) {
+//    int sum = 0; int num = 0;
+//    for (int i = 0; i < AccountList[key].buyItemsKeys.size(); i++) {
+//        num += itemsList[AccountList[key].buyItemsKeys[i]].itemSoldQuantity;
+//        sum += itemsList[AccountList[key].buyItemsKeys[i]].itemSatisfaction;
+//    }
+//    fout << sum / num << "\n";
+//    return;
+//}
+
 
 int main() {
 
@@ -257,7 +269,7 @@ int main() {
                 string names, company; int price, quantity;
                 fin >> names >> company >> price >> quantity;
                 if (itemKey.count(names)) {
-                    fout << "같은 이름을 가진 아이템이 존재합니다. 다시입력해주세요.\n";
+                    fout << "> 같은 이름을 가진 아이템이 존재합니다. 다시입력해주세요.\n";
                 }
                 else {
                     fout << "3.1. 판매 의류 등록\n"; 
@@ -268,7 +280,7 @@ int main() {
             }
             else if (int_option == 2) { // 등록 상품 조회
                 fout << "3.2. 등록 상품 조회\n";
-                if (itemsList.empty()) cout << "there is No item\n";
+                if (itemsList.empty()) cout << "> There is No item\n";
                 for (auto& item : itemsList) {
                     if (item.itemSellerID != AccountList[nowKey].memID) continue;
                     Items::showItemInform(item);
@@ -284,9 +296,9 @@ int main() {
                     }
                 }
 
-                if (itemsList.empty() || cnt < 1) fout << "No Sold item\n";
+                if (itemsList.empty() || cnt < 1) fout << "> No Sold item\n";
             }
-            else fout << "option error\n";
+            else fout << "> option error\n";
         }
         else if (chk_level1 == 4) {
             fin >> menu_level_2;
@@ -325,28 +337,29 @@ int main() {
             int int_option = checkValid(menu_level_2);
 
             if (!isLogined) {
-                fout << "you are not logined.\n";
+                fout << "> you are not logined.\n";
                 continue;
             }
 
             if (int_option == -1) {
-                fout << "option error";
+                fout << "> option error";
                 continue;
             }
-
             if (int_option == 1) {
                 int cnt = 0;
                 fout << "5.1. 판매 상품 통계\n";
                 for (auto& item : itemsList) {
                     if (item.itemSoldQuantity > 0) {
+                        if (item.itemSellerID != AccountList[nowKey].memID) continue;
                         Items::showSoldItemStatistic(item);
+                        //showSoldItemStatistic(nowKey);
                         cnt++;
                     }
                 }
 
-                if (itemsList.empty() || cnt < 1) fout << "No Sold item\n";
+                if (itemsList.empty() || cnt < 1) fout << "> No Sold item\n";
             }
-            else fout << "option error\n";
+            else fout << "> option error\n";
         }
 
     }
